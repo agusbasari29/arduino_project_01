@@ -49,6 +49,8 @@ int currentShift = 0;
 int counter = 0;
 int buttonState = 0;
 int lastButtonState = 0;
+int resetButton = 0;
+int lastButtonReset = 0;
 int state = 0;
 int target1, target2, target3;
 byte ha, hb, hc, ma, mb, mc;
@@ -57,53 +59,53 @@ char buffer[3][10];
 /** ********************************
  * functions
  ******************************** **/
-#line 58 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 60 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 void setup();
-#line 93 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 96 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 void usage(void);
-#line 109 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 113 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 void addCounter(void);
-#line 118 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 122 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 void resetCounter(void);
-#line 128 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 132 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 void editCounter(void);
-#line 138 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 142 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 void setEeprom(void);
-#line 170 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 174 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 void getEeprom(void);
-#line 193 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 197 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 bool getEepromStatus(void);
-#line 214 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 218 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 void saveTarget(void);
-#line 225 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 229 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 void saveShiftTime(void);
-#line 236 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 240 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 void getTargetShift(void);
-#line 263 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 267 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 void getCurrentShift(void);
-#line 329 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 335 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 const char * dow2String(uint8_t code);
-#line 338 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 344 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 uint8_t htoi(char c);
-#line 350 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 356 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 uint8_t i2dig(uint8_t mode);
-#line 372 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 378 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 char * p2dig(uint8_t v, uint8_t mode);
-#line 395 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 401 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 void displayZone0(void);
-#line 419 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 425 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 char readNext();
-#line 433 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 439 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 void showTime();
-#line 440 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 446 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 void printTime();
-#line 453 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 459 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 void inputTime(void);
-#line 466 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 472 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 void play(void);
-#line 495 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 511 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 void loop();
-#line 58 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
+#line 60 "/home/jabrix/projects/Arduino/Daihatsu/final/arduino_project_01/sketch.ino"
 void setup()
 {
     Serial.begin(38400);
@@ -129,6 +131,7 @@ void setup()
     P.setZone(2, 8, 11);
 
     pinMode(2, INPUT_PULLUP);
+    pinMode(3, INPUT_PULLUP);
 
     getCurrentShift();
     displayZone0();
@@ -149,6 +152,7 @@ void usage(void)
     PRINTS("\ntw yyyymmdd hhmmss dw ==== write the current date, time and day of week (1-7)");
     PRINTS("\ntr ======================= read the current time");
     PRINTS("\ni ======================== init all data");
+    PRINTS("\ne ======================== get eeprom data");
     PRINTS("\nce nnnnnn ================ edit counter value");
     PRINTS("\ncr ======================= reset counter to 0.");
     PRINTS("\nst aaaaaa bbbbbb cccccc == set target for each shift");
@@ -312,7 +316,9 @@ void getTargetShift(void)
 void getCurrentShift(void)
 {
     RTC.readTime();
-    if (RTC.h >= ha)
+    if (RTC.h < ha){
+        currentShift = 2;
+    }else if (RTC.h >= ha)
     {
         if (RTC.h == ha && RTC.m < ma)
         {
@@ -515,6 +521,7 @@ void inputTime(void)
 void play(void)
 {
     buttonState = digitalRead(2);
+    resetButton = digitalRead(3);
     if (buttonState != lastButtonState)
     {
         if (!buttonState == HIGH)
@@ -524,6 +531,15 @@ void play(void)
         delay(50);
     }
     lastButtonState = buttonState;
+    if (resetButton != lastButtonReset)
+    {
+        if (!resetButton == HIGH)
+        {
+            resetCounter();
+        }
+        delay(50);
+    }
+    lastButtonReset = resetButton;
     getCurrentShift();
     getTargetShift();
     if (P.displayAnimate())
@@ -553,6 +569,9 @@ void loop()
         break;
     case 'I':
         setEeprom();
+        break;
+    case 'E':
+        getEeprom();
         break;
     case 'T':
         c = readNext();

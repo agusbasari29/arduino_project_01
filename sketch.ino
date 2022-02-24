@@ -47,6 +47,8 @@ int currentShift = 0;
 int counter = 0;
 int buttonState = 0;
 int lastButtonState = 0;
+int resetButton = 0;
+int lastButtonReset = 0;
 int state = 0;
 int target1, target2, target3;
 byte ha, hb, hc, ma, mb, mc;
@@ -80,6 +82,7 @@ void setup()
     P.setZone(2, 8, 11);
 
     pinMode(2, INPUT_PULLUP);
+    pinMode(3, INPUT_PULLUP);
 
     getCurrentShift();
     displayZone0();
@@ -100,6 +103,7 @@ void usage(void)
     PRINTS("\ntw yyyymmdd hhmmss dw ==== write the current date, time and day of week (1-7)");
     PRINTS("\ntr ======================= read the current time");
     PRINTS("\ni ======================== init all data");
+    PRINTS("\ne ======================== get eeprom data");
     PRINTS("\nce nnnnnn ================ edit counter value");
     PRINTS("\ncr ======================= reset counter to 0.");
     PRINTS("\nst aaaaaa bbbbbb cccccc == set target for each shift");
@@ -263,7 +267,11 @@ void getTargetShift(void)
 void getCurrentShift(void)
 {
     RTC.readTime();
-    if (RTC.h >= ha)
+    if (RTC.h < ha)
+    {
+        currentShift = 2;
+    }
+    else if (RTC.h >= ha)
     {
         if (RTC.h == ha && RTC.m < ma)
         {
@@ -466,6 +474,7 @@ void inputTime(void)
 void play(void)
 {
     buttonState = digitalRead(2);
+    resetButton = digitalRead(3);
     if (buttonState != lastButtonState)
     {
         if (!buttonState == HIGH)
@@ -475,6 +484,15 @@ void play(void)
         delay(50);
     }
     lastButtonState = buttonState;
+    if (resetButton != lastButtonReset)
+    {
+        if (!resetButton == HIGH)
+        {
+            resetCounter();
+        }
+        delay(50);
+    }
+    lastButtonReset = resetButton;
     getCurrentShift();
     getTargetShift();
     if (P.displayAnimate())
@@ -504,6 +522,9 @@ void loop()
         break;
     case 'I':
         setEeprom();
+        break;
+    case 'E':
+        getEeprom();
         break;
     case 'T':
         c = readNext();
